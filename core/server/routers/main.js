@@ -11,4 +11,4 @@ let router = express.Router();
 router.get('/', controllers.main.home);
 
 
-module.exports = router;
+export default router;

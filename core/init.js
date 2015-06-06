@@ -7,17 +7,17 @@ import configs      from '../config';
 
 
 // create express application
-var app = express();
+let app = express();
 
 
 // use all the middleware
-for (var middleware in middlewares) {
+for (let middleware in middlewares) {
   app.use(middlewares[middleware]);
 }
 
 
 // run all the configs
-for (var config in configs) {
+for (let config in configs) {
   configs[config](app);
 }
 

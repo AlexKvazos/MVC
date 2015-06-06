@@ -7,7 +7,7 @@
 
 import raven from 'raven';
 
-var ravenClient = null;
+let ravenClient = null;
 
 // initialize raven client if key is provided
 if (process.env.SENTRY_DSN) {
@@ -17,7 +17,7 @@ if (process.env.SENTRY_DSN) {
 
 
 // export the ErrorHandler object
-var ErrorHandler = module.exports = {};
+let ErrorHandler = {};
 
 
 
@@ -84,3 +84,8 @@ process.on('uncaughtException', (error) => {
     ravenClient.captureError(error, { extra: { type: 'UNCAUGHT_EXCEPTION' } });
   }
 });
+
+
+
+
+export default ErrorHandler;

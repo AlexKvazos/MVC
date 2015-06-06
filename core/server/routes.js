@@ -1,6 +1,6 @@
 import routers from './routers';
 
-module.exports = (app) => {
+export default (app) => {
 
   app.use('/', routers.main);
 

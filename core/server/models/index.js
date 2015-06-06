@@ -2,4 +2,4 @@
  * Export all the models in this folder
  * @type {Object}
  */
-module.exports = require('requireindex')(__dirname);
+export default require('requireindex')(__dirname);

@@ -6,17 +6,16 @@
  */
 
 import mysql         from 'mysql';
-import ErrorHandler  from './error_handler';
+import ErrorHandler  from '../error_handler';
 
-
-var Database    = module.exports = {};
-var connection  = null;
+let Database    = {};
+let connection  = null;
 
 // connection parameters
-var host = process.env.MYSQL_HOST;
-var user = process.env.MYSQL_USER;
-var pass = process.env.MYSQL_PASS;
-var db   = process.env.MYSQL_DB;
+let host = process.env.MYSQL_HOST;
+let user = process.env.MYSQL_USER;
+let pass = process.env.MYSQL_PASS;
+let db   = process.env.MYSQL_DB;
 
 
 Database.init = () => {
@@ -55,18 +54,18 @@ Database.query = (sql, params, callback) => {
 
 // handle connection events
 function handleConnection(err) {
-  var self = this;
 
-  // capture errors
+  // capture any errors
   if (err) { ErrorHandler.capture(err); }
 
-  // re-attempt connection in 5000ms if the connection was refused
-  if (err && err.code === 'ECONNREFUSED') {
+  // re-attempt connection in 5000ms if the connection was refused or timed out
+  if (err && (err.code === 'ECONNREFUSED' || err.code === 'ETIMEDOUT')) {
     return setTimeout(() => {
-      self.init();
+      Database.init();
     }, 5000);
   }
 
+  // listen to error events on connection object
   connection.on('error', handleError);
 
 }
@@ -88,3 +87,5 @@ function handleError(err) {
   }
 
 }
+
+export default Database;
