@@ -15,11 +15,6 @@
     "no-use-before-define": false,
     "new-cap": false
   },
-  "globals": {
-    "$": true,
-    "angular": true,
-    "io": true
-  },
   "ecmaFeatures": {
     "modules": true
   }
