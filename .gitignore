@@ -1,5 +1,5 @@
 node_modules/
 public/
-vendir/
+vendor/
 *.log
 .env
