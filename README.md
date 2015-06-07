@@ -12,7 +12,7 @@ $ npm install   // this will also run bower install and gulp build
 $ npm start
 ```
 
-## Grunt Tasks
+## Gulp Tasks
 
 * **gulp lint** Test javascript code against ESLint
 * **gulp serve** Start server and (restart when server side code changes) && (re-bundle client side js when client code changes)
