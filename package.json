@@ -17,10 +17,10 @@
     "MVC",
     "Express4",
     "Browserify",
-    "Grunt"
+    "Gulp"
   ],
   "author": "AlexKvazos",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/AlexKvazos/MVC/issues"
   },
