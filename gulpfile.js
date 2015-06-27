@@ -43,7 +43,8 @@ gulp.task('bundle', function() {
   var debug = process.env.NODE_ENV && process.env.NODE_ENV.toLowerCase() === 'development';
   var b = browserify({
     entries: 'core/client/js/app.js',
-    transform: [babelify]
+    transform: [babelify],
+    debug: true
   });
 
   if (debug) {
@@ -51,9 +52,6 @@ gulp.task('bundle', function() {
     .pipe(source('application.js'))
     .pipe(buffer())
     .pipe(sourcemaps.init({loadMaps: true}))
-    .pipe(uglify({
-      mangle: false
-      }))
     .on('error', gutil.log)
     .pipe(sourcemaps.write('./'))
     .pipe(gulp.dest('./public'));
