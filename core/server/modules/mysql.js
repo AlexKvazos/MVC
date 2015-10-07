@@ -6,7 +6,7 @@
  */
 
 import mysql         from 'mysql';
-import ErrorHandler  from '../error_handler';
+import ErrorHandler  from './';
 
 let Database    = {};
 let connection  = null;
