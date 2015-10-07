@@ -1,5 +1,5 @@
-/**
- * Export all the routers in this folder
- * @type {Object}
- */
-export default require('requireindex')(__dirname);
+import main from './main';
+
+export default (app) => {
+  app.use('/', main);
+};

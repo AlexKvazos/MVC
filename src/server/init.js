@@ -1,9 +1,9 @@
-import http         from 'http';
-import express      from 'express';
+import http             from 'http';
+import express          from 'express';
 import { ErrorHandler } from './modules';
-import middlewares  from './middleware';
-import routes       from './routes';
-import configs      from './config';
+import middlewares      from './middleware';
+import routers          from './routers';
+import configs          from './config';
 
 
 // create express application
@@ -23,12 +23,10 @@ for (let config in configs) {
 
 
 // register application routes
-routes(app);
-
+routers(app);
 
 // use the error handler middleware
 app.use(ErrorHandler.express);
-
 
 // create and start http server
 http.createServer(app).listen(app.get('port'), () => {
