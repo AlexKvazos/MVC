@@ -42,6 +42,18 @@ let ErrorHandler = {
     console.error('== Application Error ==');
     console.error(` Code: ${error.code}`);
     console.error(` ${error.stack}`);
+  },
+
+  /**
+   * Express error handler middleware
+   * @param  {Object}   err  Error Object
+   * @param  {Object}   req  Request Object
+   * @param  {Object}   res  Response Object
+   * @param  {Function} next Next middleware callback
+   */
+  express(err, req, res, next) {
+    ErrorHandler.capture(err);
+    res.send(500).json(err);
   }
 
 };

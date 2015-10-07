@@ -1,9 +1,9 @@
 import http         from 'http';
 import express      from 'express';
-import ErrorHandler from './server/modules/error_handler';
-import middlewares  from './server/middleware';
-import routes       from './server/routes';
-import configs      from '../config';
+import { ErrorHandler } from './modules';
+import middlewares  from './middleware';
+import routes       from './routes';
+import configs      from './config';
 
 
 // create express application

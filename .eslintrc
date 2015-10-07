@@ -1,4 +1,5 @@
 {
+  "parser": "babel-eslint",
   "env": {
     "browser": 1,
     "node": 1,
@@ -13,9 +14,13 @@
     "curly": 0,
     "no-octal-escape": 0,
     "no-use-before-define": 0,
-    "new-cap": 0
+    "new-cap": 0,
+    "no-shadow": 0,
+    "camelcase": 0,
+    "no-unused-vars": [ 2, { "vars": "all", "args": "none" } ]
   },
   "ecmaFeatures": {
-    "modules": 1
+    "modules": 1,
+    "jsx": 1
   }
 }

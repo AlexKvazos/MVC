@@ -1,24 +1,30 @@
 var gulp = require('gulp');
-var sass = require('gulp-ruby-sass');
-var rename = require('gulp-rename');
 var minifycss = require('gulp-minify-css');
 var del = require('del');
+var path = require('path');
+var less = require('gulp-less');
 var livereload = require('gulp-livereload');
 var eslint = require('gulp-eslint');
 var browserify = require('browserify');
 var source = require('vinyl-source-stream');
 var buffer = require('vinyl-buffer');
+var concat = require('gulp-concat');
 var babelify = require('babelify');
 var sourcemaps = require('gulp-sourcemaps');
 var gutil = require('gulp-util');
 var uglify = require('gulp-uglify');
 var nodemon = require('gulp-nodemon');
 
-// sass compiler
-gulp.task('styles', function() {
-  return sass('core/client/scss/index.scss', { style: 'expanded' })
-    .pipe(rename({ basename: 'application' }))
+var debug = false;
+
+// less compiler
+gulp.task('less', function() {
+  return gulp.src('src/client/less/index.less')
+    .pipe(less({
+      paths: [ path.join(__dirname, 'src/client/less') ]
+    }))
     .pipe(minifycss())
+    .pipe(concat('style.css'))
     .pipe(gulp.dest('public'));
 });
 
@@ -31,7 +37,7 @@ gulp.task('clean', function(cb) {
 
 // lint javascript
 gulp.task('lint', function() {
-  return gulp.src(['core/**/*.js', 'core/**/*.jsx'])
+  return gulp.src(['src/**/*.js', 'src/**/*.jsx'])
     .pipe(eslint())
     .pipe(eslint.format())
     .pipe(eslint.failOnError());
@@ -40,11 +46,10 @@ gulp.task('lint', function() {
 
 // bundle javascript
 gulp.task('bundle', function() {
-  var debug = process.env.NODE_ENV && process.env.NODE_ENV.toLowerCase() === 'development';
   var b = browserify({
-    entries: 'core/client/js/app.js',
+    entries: 'src/client/app.js',
     transform: [babelify],
-    debug: true
+    debug: debug
   });
 
   if (debug) {
@@ -59,7 +64,9 @@ gulp.task('bundle', function() {
     return b.bundle()
     .pipe(source('application.js'))
     .pipe(buffer())
-    .pipe(uglify())
+    .pipe(uglify({
+      mangle: false
+    }))
     .on('error', gutil.log)
     .pipe(gulp.dest('./public'));
   }
@@ -68,32 +75,35 @@ gulp.task('bundle', function() {
 
 // copy fonts, images and templates
 gulp.task('copy', function() {
-  gulp.src('./core/client/img/**/*.{png,gif,jpg,jpeg}')
+  gulp.src('./src/client/img/**/*.{png,gif,jpg,jpeg,ico}')
     .pipe(gulp.dest('./public/img'));
-  gulp.src('./core/client/fonts/**/*.{ttf,woff,eof,svg,otf}')
+  gulp.src('./src/client/fonts/**/*.{ttf,woff,eof,svg,otf}')
     .pipe(gulp.dest('./public/fonts'));
-  gulp.src('./core/client/templates/**/*.{html,hbs}')
+  gulp.src('./src/client/templates/**/*.{html,hbs}')
     .pipe(gulp.dest('./public/templates'));
 });
 
 
 // main build task
 gulp.task('build', ['lint', 'clean'], function() {
-  gulp.start('styles');
+  gulp.start('less');
   gulp.start('bundle');
   gulp.start('copy');
 });
 
 
 // development task
-gulp.task('serve', function() {
+gulp.task('start', function() {
+
+  // bundle with sourcemaps and no compression
+  debug = true;
 
   livereload.listen();
 
   nodemon({
     script: './bin/start',
     ext: 'hbs,js',
-    ignore: ['public/**/*.js', 'node_modules/**/*.js', 'core/client/**/*.js']
+    ignore: ['public/**/*.js', 'node_modules/**/*.js', 'src/client/**/*.js']
   })
   .on('restart', function() {
     livereload.reload();
@@ -101,10 +111,10 @@ gulp.task('serve', function() {
 
   gulp.watch(['public/**/*']).on('change', livereload.changed);
 
-  gulp.watch('core/client/img/**/*', ['copy']);
-  gulp.watch('core/client/fonts/**/*', ['copy']);
-  gulp.watch('core/client/templates/**/*', ['copy']);
+  gulp.watch('src/client/img/**/*', ['copy']);
+  gulp.watch('src/client/fonts/**/*', ['copy']);
+  gulp.watch('src/client/templates/**/*', ['copy']);
 
-  gulp.watch('core/client/**/*.scss', ['styles']);
-  gulp.watch('core/client/**/*.{js,jsx}', ['bundle']);
+  gulp.watch('src/client/**/*.less', ['less']);
+  gulp.watch('src/client/**/*.{js,jsx}', ['bundle']);
 });
