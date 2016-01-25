@@ -4,7 +4,7 @@ var browserify = require('browserify');
 var watchify = require('watchify');
 var exorcist = require('exorcist');
 var UglifyJS = require('uglify-js');
-var logger = require('../src/server/modules/Logger');
+var logger = require('../src/server/modules/util/logger');
 var livereload = { refresh: function() {} };
 
 var input = path.join(__dirname, '../src/client/app.js');

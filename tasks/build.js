@@ -10,7 +10,7 @@ var fs = require('fs');
 var path = require('path');
 var less = require('./less');
 var bundle = require('./bundle');
-var logger = require('../src/server/modules/Logger');
+var logger = require('../src/server/modules/util/logger');
 
 // ensure that public folder exists
 try {

@@ -11,7 +11,7 @@
 var fs = require('fs');
 var path = require('path');
 var nodemon = require('nodemon');
-var logger = require('../src/common/logger');
+var logger = require('../src/server/modules/util/logger');
 var less = require('./less');
 var bundle = require('./bundle');
 

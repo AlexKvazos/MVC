@@ -1,7 +1,7 @@
 var fs = require('fs');
 var path = require('path');
 var less = require('less');
-var logger = require('../src/server/modules/Logger');
+var logger = require('../src/server/modules/util/logger');
 
 var lessfile = path.join(__dirname, '../src/client/less/index.less');
 var lessfolder = path.join(__dirname, '../src/client/less');
