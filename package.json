@@ -36,7 +36,8 @@
     "express": "^4.12.3",
     "mysql": "^2.6.2",
     "raven": "^0.8.1",
-    "requireindex": "^1.1.0"
+    "requireindex": "^1.1.0",
+    "winston": "^2.1.1"
   },
   "devDependencies": {
     "babel-eslint": "^4.1.1",
