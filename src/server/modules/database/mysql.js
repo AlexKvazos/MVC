@@ -1,75 +1,72 @@
 import mysql from 'mysql';
-import debug from 'debug';
-import ErrorHandler from '../error_handler';
+import { logger, errorhanlder as ErrorHandler } from '../util';
 
-const logger = debug('database');
+/**
+ * Module Access
+ * @public
+ */
 
-class DatabaseHandler {
+const { env } = process;
+const { MYSQL_HOST, MYSQL_PORT, MYSQL_USER, MYSQL_PASS, MYSQL_DB } = env;
+let connection;
+
+let MySQLHandler = {
 
   /**
    * Initialize the database connection
    */
   init() {
-    let { env } = process;
-    let { MYSQL_HOST, MYSQL_PORT, MYSQL_USER, MYSQL_PASS, MYSQL_DB } = env;
+    connection = mysql.createConnection({
+      host: MYSQL_HOST,
+      port: MYSQL_PORT,
+      user: MYSQL_USER,
+      password: MYSQL_PASS,
+      database: MYSQL_DB
+    });
 
-    // create database connection if params are defined
-    if (MYSQL_HOST && MYSQL_USER && MYSQL_DB) {
-      this.connection = mysql.createConnection({
-        host: MYSQL_HOST,
-        port: MYSQL_PORT,
-        user: MYSQL_USER,
-        password: MYSQL_PASS,
-        database: MYSQL_DB
-      });
-
-      // establish connection
-      this.connection.connect(::this.handleConnection);
-    }
-  }
+    logger.info('(mysql) connecting to mysql server...');
+    connection.connect(::MySQLHandler.connectionHandler);
+  },
 
   /**
-   * Execute a query on the database connection
-   * @param  {params} ...params All params pased to the query function
+   * Handle a database connection
+   * @param  {Object} err Possible error
    */
-  query(...params) {
-    this.connection.query(...params);
-  }
+  connectionHandler(err) {
 
-  /**
-   * Handle a database connection attempt
-   * @param  {Object} err Error
-   */
-  handleConnection(err) {
-    logger('attempting connection');
-
-    // if connection refused or timed out, try again in 5000ms
-    if (err && (err.code === 'ECONNREFUSED' || err.code === 'ETIMEDOUT')) {
-      return setTimeout(::this.init, 5000);
-    }
-
-    // any other error gets captured
+    // retry connection if connection is refused or gets timed out
     if (err) {
+      if (err.code === 'ECONNREFUSED' || err.code === 'ETIMEDOUT') {
+        return setTimeout(::MySQLHandler.init, 5000);
+      }
+
+      // capture any other type of error
       return ErrorHandler.capture(err);
     }
 
-    logger('successfully connected to mysql server');
-    this.connection.on('error', ::this.handleError);
-  }
+    logger.info('(mysql) successfully connected to mysql server');
+    connection.on('error', ::MySQLHandler.onError);
+  },
 
   /**
-   * Handle errors thrown by mysql server
-   * @param  {Object} err Error
+   * Execute a query on the connection instance
    */
-  handleError(err) {
-    ErrorHandler.capture(err);
+  query(...params) {
+    connection.query(...params);
+  },
 
-    // if the connection was lost, attempt reconnection in 5000ms
-    if (err.code === 'PROTOCOL_CONNECTION_LOST') {
-      return setTimeout(::this.init, 5000);
+  /**
+   * Handle connection errors
+   * @param  {Object} err Error object
+   */
+  onError(err) {
+    switch (err.code) {
+      case 'PROTOCOL_CONNECTION_LOST':
+        setTimeout(::MySQLHandler.init, 5000);
+        break;
     }
   }
 
-}
+};
 
-export default new DatabaseHandler();
+export default MySQLHandler;
