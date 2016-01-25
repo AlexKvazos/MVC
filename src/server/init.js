@@ -1,6 +1,6 @@
 import http             from 'http';
 import express          from 'express';
-import { ErrorHandler } from './modules';
+import { sentry }       from './modules/util';
 import middlewares      from './middleware';
 import routers          from './routers';
 import configs          from './config';
@@ -26,7 +26,7 @@ for (let config in configs) {
 routers(app);
 
 // use the error handler middleware
-app.use(ErrorHandler.express);
+app.use(sentry.express);
 
 // create and start http server
 http.createServer(app).listen(app.get('port'), () => {

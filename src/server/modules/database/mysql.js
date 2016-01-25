@@ -1,5 +1,5 @@
 import mysql from 'mysql';
-import { logger, errorhanlder as ErrorHandler } from '../util';
+import { logger, sentry } from '../util';
 
 /**
  * Module Access
@@ -41,7 +41,7 @@ let MySQLHandler = {
       }
 
       // capture any other type of error
-      return ErrorHandler.capture(err);
+      return sentry.capture(err);
     }
 
     logger.info('(mysql) successfully connected to mysql server');
