@@ -12,17 +12,16 @@ $ npm install
 $ npm start
 ```
 
-`npm install` will automatically perform the necessary Gulp tasks to bundle the app.
+`npm install` will automatically perform the necessary tasks to bundle the app.
 
 ## Development
 
-#### Gulp Tasks
+#### Npm Tasks
 
-* `gulp lint` Test javascript code against ESLint
-* `gulp start` Development task with LiveReload and auto-bundle with sourcemaps
-* `gulp build` Build app for production
+* `npm run dev` Run development server with auto-restarts, automatic less compiling, automatic javascript transpiling, and browser refresh
+* `npm run build` Bundle application with compression and no source mapping
 
-_Note: Sourcemaps will only be generated when the bundle is rebuilt by 'gulp start'_
+_Note: Source maps will only be generated when the bundle is build by 'npm run build'_
 
 ## Testing
 ```bash
