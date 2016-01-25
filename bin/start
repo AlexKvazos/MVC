@@ -7,4 +7,4 @@ require('dotenv').load();
 require('babel/register');
 
 // initialize the application
-require('../src/server/init');
+require('../src/server/bootstrap/server');

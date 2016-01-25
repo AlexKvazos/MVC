@@ -1,9 +1,9 @@
 import http             from 'http';
 import express          from 'express';
-import { sentry }       from './modules/util';
-import { mysql }        from './modules/database';
-import middlewares      from './middleware';
-import routers          from './routers';
+import { sentry }       from '../modules/util';
+import { mysql }        from '../modules/database';
+import middlewares      from '../middleware';
+import router          from './router';
 
 // create express application
 let app = express();
@@ -13,11 +13,14 @@ mysql.init();
 
 // use all the middleware
 for (let middleware in middlewares) {
-  app.use(middlewares[middleware]);
+  let m = middlewares[middleware];
+  if (m.global) {
+    app.use(m.handler);
+  }
 }
 
 // register application routes
-routers(app);
+router(app);
 
 // use the error handler middleware
 app.use(sentry.express);
