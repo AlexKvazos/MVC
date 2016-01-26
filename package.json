@@ -38,6 +38,7 @@
     "babel-preset-stage-0": "^6.3.13",
     "dotenv": "^1.1.0",
     "express": "^4.12.3",
+    "hbs": "^4.0.0",
     "moment": "^2.11.1",
     "mysql": "^2.6.2",
     "raven": "^0.8.1",
