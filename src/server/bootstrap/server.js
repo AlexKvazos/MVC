@@ -1,9 +1,9 @@
-import http             from 'http';
-import express          from 'express';
-import { sentry }       from '../modules/util';
-import { mysql }        from '../modules/database';
-import middlewares      from '../middleware';
-import router          from './router';
+import http                from 'http';
+import express             from 'express';
+import { sentry, logger }  from '../modules/util';
+import { mysql }           from '../modules/database';
+import middlewares         from '../middleware';
+import router              from './router';
 
 // create express application
 let app = express();
@@ -28,5 +28,5 @@ app.set('port', process.env.PORT || 3000);
 
 // create and start http server
 http.createServer(app).listen(app.get('port'), () => {
-  console.log('http server running on port %s', app.get('port'));
+  logger.info('(http) web server running on port %s', app.get('port'));
 });

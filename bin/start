@@ -2,9 +2,17 @@
 
 // load environment variables
 require('dotenv').load();
+require('babel-core/register');
 
-// load babel transpiler
-require('babel/register');
+var logger = require('../src/server/modules/util').logger;
+
+logger.info('===============================================================================');
+logger.info('=', process.title, process.pid, '[UP]', new Date());
+if (process.env.NODE_ENV === 'development') {
+  logger.warn('= Running in "development" environment');
+}
+logger.info('===============================================================================');
+
 
 // initialize the application
 require('../src/server/bootstrap/server');

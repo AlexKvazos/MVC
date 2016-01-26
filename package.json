@@ -4,8 +4,10 @@
   "description": "MVC Boilerplate for Express 4 Applications",
   "main": "bin/start",
   "scripts": {
-    "test": "gulp lint",
-    "postinstall": "gulp build",
+    "test": "./node_modules/eslint/bin/eslint.js src/",
+    "postinstall": "node ./tasks/build.js",
+    "dev": "node ./tasks/dev.js",
+    "build": "node ./tasks/build.js",
     "start": "node bin/start"
   },
   "repository": {
@@ -16,7 +18,9 @@
     "MVC",
     "Express4",
     "Browserify",
-    "Gulp"
+    "Watchify",
+    "Livereload",
+    "Less"
   ],
   "author": "AlexKvazos",
   "license": "MIT",
@@ -34,6 +38,7 @@
     "babel-preset-stage-0": "^6.3.13",
     "dotenv": "^1.1.0",
     "express": "^4.12.3",
+    "moment": "^2.11.1",
     "mysql": "^2.6.2",
     "raven": "^0.8.1",
     "requireindex": "^1.1.0",
@@ -52,7 +57,10 @@
     "watchify": "^3.7.0"
   },
   "babel": {
-    "presets": ["es2015", "stage-0"],
+    "presets": [
+      "es2015",
+      "stage-0"
+    ],
     "plugins": [
       "typecheck",
       "syntax-flow",
@@ -69,9 +77,18 @@
       "es6": true
     },
     "rules": {
-      "quotes": [2, "single"],
-      "strict": [2, "never"],
-      "semi": [2, "always"],
+      "quotes": [
+        2,
+        "single"
+      ],
+      "strict": [
+        2,
+        "never"
+      ],
+      "semi": [
+        2,
+        "always"
+      ],
       "no-multi-spaces": 0,
       "no-alert": 0,
       "key-spacing": 0,
@@ -79,11 +96,21 @@
       "no-irregular-whitespace": 0,
       "no-console": 0,
       "no-octal-escape": 0,
-      "no-unused-vars": [2, {"vars": "all", "args": "none"}],
+      "no-unused-vars": [
+        2,
+        {
+          "vars": "all",
+          "args": "none"
+        }
+      ],
       "new-cap": 0,
       "no-shadow": 0,
       "camelcase": 0,
-      "max-len": [1, 80, 2]
+      "max-len": [
+        1,
+        80,
+        2
+      ]
     },
     "ecmaFeatures": {
       "modules": true,

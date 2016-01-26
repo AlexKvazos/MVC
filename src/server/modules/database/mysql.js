@@ -16,6 +16,8 @@ let MySQLHandler = {
    * Initialize the database connection
    */
   init() {
+    if (!MYSQL_HOST) throw new Error('No MySQL Credentials');
+
     connection = mysql.createConnection({
       host: MYSQL_HOST,
       port: MYSQL_PORT,
