@@ -1,3 +1,4 @@
+import { EventEmitter } from 'events';
 import mysql from 'mysql';
 import { logger, sentry } from '../util';
 
@@ -47,6 +48,7 @@ let MySQLHandler = {
     }
 
     logger.info('(mysql) successfully connected to mysql server');
+    MySQLHandler.emitter.emit('ready');
     connection.on('error', ::MySQLHandler.onError);
   },
 
@@ -67,7 +69,9 @@ let MySQLHandler = {
         setTimeout(::MySQLHandler.init, 5000);
         break;
     }
-  }
+  },
+
+  emitter: new EventEmitter()
 
 };
 

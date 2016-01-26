@@ -26,7 +26,13 @@ router(app);
 app.use(sentry.express);
 app.set('port', process.env.PORT || 3000);
 
-// create and start http server
-http.createServer(app).listen(app.get('port'), () => {
-  logger.info('(http) web server running on port %s', app.get('port'));
+
+// wait for mysql to be ready to start web server
+mysql.emitter.once('ready', () => {
+
+  // create and start http server
+  http.createServer(app).listen(app.get('port'), () => {
+    logger.info('(http) web server running on port %s', app.get('port'));
+  });
+
 });
