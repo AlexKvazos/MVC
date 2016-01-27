@@ -9,7 +9,7 @@ import { Router } from 'express';
 const MainController = Router();
 
 MainController.get('/', (req, res) => {
-  res.send('Here starts a new application.');
+  res.render('main');
 });
 
 export default MainController;
