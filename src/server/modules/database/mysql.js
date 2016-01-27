@@ -40,6 +40,7 @@ let MySQLHandler = {
     // retry connection if connection is refused or gets timed out
     if (err) {
       if (err.code === 'ECONNREFUSED' || err.code === 'ETIMEDOUT') {
+        logger.error('(mysql) connection failed ['+err.code+']');
         return setTimeout(::MySQLHandler.init, 5000);
       }
 

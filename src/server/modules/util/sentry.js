@@ -1,4 +1,5 @@
 import raven from 'raven';
+import logger from './logger';
 
 const { SENTRY_DSN } = process.env;
 
@@ -39,9 +40,9 @@ let ErrorHandler = {
    * @param  {Object} error Error Object
    */
   print(error) {
-    console.error('== Application Error ==');
-    console.error(` Code: ${error.code}`);
-    console.error(` ${error.stack}`);
+    logger.error('== Application Error ==');
+    logger.error(` Code: ${error.code}`);
+    logger.error(` ${error.stack}`);
   },
 
   /**
