@@ -4,12 +4,16 @@ import { sentry, logger }  from '../modules/util';
 import { mysql }           from '../modules/database';
 import middlewares         from '../middleware';
 import router              from './router';
+import handlebars          from './handlebars';
 
 // create express application
 let app = express();
 
 // initialize mysql server
 mysql.init();
+
+// run handlebars configuration
+handlebars(app);
 
 // use all the middleware
 for (let middleware in middlewares) {
