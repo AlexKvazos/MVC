@@ -54,6 +54,4 @@ nodemon.on('restart', function() {
  * Automatic .less compiling
  */
 
-var compressCss = false;
-var lessWatch = true;
-less(compressCss, lessWatch);
+less(development);

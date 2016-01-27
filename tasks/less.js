@@ -7,7 +7,7 @@ var lessfile = path.join(__dirname, '../src/client/less/index.less');
 var lessfolder = path.join(__dirname, '../src/client/less');
 var cssfile = path.join(__dirname, '../public/style.css');
 
-module.exports = function lessTask(development) {
+module.exports = function lessTask(development, disableWatch) {
 
   logger.info('[less] compiling to css...');
   var start = Date.now();
@@ -37,10 +37,10 @@ module.exports = function lessTask(development) {
     logger.info('[less] done (' + duration + ' seconds) ✓');
   }
 
-  if (development) {
+  if (development && !disableWatch) {
     // enable watching and recompiling if enabled
     fs.watch(lessfolder, function(event, filename) {
-      lessTask(true, false);
+      lessTask(true, true);
     });
   }
 
